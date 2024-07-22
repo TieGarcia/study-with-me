@@ -4,16 +4,16 @@ package com.se4f7.prj301.model.request;
 
 public class SettingsModelRequest {
 	private String content;
-	private String types;
+	private String type;
 	private String image;
 	public SettingsModelRequest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public SettingsModelRequest(String content, String types, String image) {
+	public SettingsModelRequest(String content, String type, String image) {
 		super();
 		this.content = content;	
-		this.types = types;
+		this.type = type;
 		this.image = image;		
 	}
 	public String getContent() {
@@ -28,11 +28,11 @@ public class SettingsModelRequest {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	public String getTypes() {
-		return types;
+	public String getType() {
+		return type;
 	}
-	public void setTypes(String types) {
-		this.types = types;
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 }

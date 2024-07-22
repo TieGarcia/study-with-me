@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `web_setting` (
 	`createdBy` VARCHAR(255) DEFAULT NULL,
 	`updatedBy` VARCHAR(255) DEFAULT NULL,
 	`status` ENUM("ACTIVE", "IN_ACTIVE") DEFAULT 'ACTIVE',
-	`types` VARCHAR(50),
+	`type` VARCHAR(50),
 	`image` VARCHAR(255),
 	PRIMARY KEY(`id`)
 );

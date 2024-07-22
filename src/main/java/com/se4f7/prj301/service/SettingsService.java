@@ -15,7 +15,7 @@ public interface SettingsService {
 
 	public boolean deleteById(String id);
 
-	public SettingsModelResponse getByTypes(String types);
+	public SettingsModelResponse getByType(String type);
 	public SettingsModelResponse getById(String id);
 	public PaginationModel filter(String page, String size, String name);
 		

@@ -18,7 +18,7 @@ public class SettingsServiceImpl implements SettingsService {
 	@Override
 	public boolean create(SettingsModelRequest request, Part image, String username) {
 		// Validate title is exists.
-		SettingsModelResponse oldSettings = settingsRepository.getByTypes(request.getTypes());
+		SettingsModelResponse oldSettings = settingsRepository.getByType(request.getType());
 		if (oldSettings != null) {
 			throw new RuntimeException(ErrorMessage.NAME_IS_EXISTS);
 		}
@@ -45,9 +45,9 @@ public class SettingsServiceImpl implements SettingsService {
 			throw new RuntimeException(ErrorMessage.RECORD_NOT_FOUND);
 		}
 		// Compare is title change.
-		if (!request.getTypes().equalsIgnoreCase(oldSettings.getTypes())) {
+		if (!request.getType().equalsIgnoreCase(oldSettings.getType())) {
 			// Compare new title with other name in database.
-			SettingsModelResponse otherPosts = settingsRepository.getByTypes(request.getTypes());
+			SettingsModelResponse otherPosts = settingsRepository.getByType(request.getType());
 			if (otherPosts != null) {
 				throw new RuntimeException(ErrorMessage.NAME_IS_EXISTS);
 			}
@@ -84,9 +84,9 @@ public class SettingsServiceImpl implements SettingsService {
 	}
 
 	@Override
-	public SettingsModelResponse getByTypes(String types) {
+	public SettingsModelResponse getByType(String type) {
 
-		SettingsModelResponse oldSettings = settingsRepository.getByTypes(types);
+		SettingsModelResponse oldSettings = settingsRepository.getByType(type);
 		if (oldSettings == null) {
 			throw new RuntimeException(ErrorMessage.RECORD_NOT_FOUND);
 		}

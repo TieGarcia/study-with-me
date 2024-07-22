@@ -28,17 +28,16 @@
           <thead>
             <tr>
               <th>Id</th>
-              <th>Content</th>
+              <th>Images</th>
               <th>Create Date</th>
               <th>Updated Date</th>
                <th>Create By</th>
               <th>Updated By</th>
-            
               <th>Status</th>
-              <th>Type </th>
-              <th>Image</th>
-              
-              
+              <th>Width</th>
+              <th>Height</th>
+              <th>Position</th>
+              <th>Url</th>
               <th style="width: 95px;">Actions</th>
             </tr>
           </thead>
@@ -66,7 +65,10 @@
         <div class="form-group">
           <label for="name">Title</label> <input class="form-control" placeholder="Title" id="inpPostsTitle">
         </div>
-       
+        <div class="form-group">
+          <label for="name">Category</label> <select id="selPostsCategory">
+          </select>
+        </div>
         <div class="form-group">
           <label for="name">Banner</label>
           <div class="custom-file">
@@ -96,4 +98,4 @@
     <!-- /.card -->
   </div>
 </div>
-<script src="${pageContext.request.contextPath}/page-admin/features/settings/index.js"></script>
+<script src="${pageContext.request.contextPath}/page-admin/ads/posts/index.js"></script>

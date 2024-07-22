@@ -9,30 +9,32 @@ import java.util.List;
 import com.se4f7.prj301.constants.ErrorMessage;
 import com.se4f7.prj301.enums.StatusEnum;
 import com.se4f7.prj301.model.PaginationModel;
-import com.se4f7.prj301.model.request.SettingsModelRequest;
-import com.se4f7.prj301.model.response.SettingsModelResponse;
+import com.se4f7.prj301.model.request.AdsModelRequest;
+import com.se4f7.prj301.model.response.AdsModelResponse;
 
 import com.se4f7.prj301.utils.DBUtil;
 
-public class SettingsRepository {
-	private static final String INSERT_SQL = "INSERT INTO web_setting (content, createdBy, updatedBy, type, image) VALUES (?, ?, ?, ?, ?)";
-	private static final String UPDATE_SQL = "UPDATE web_setting SET content = ?, updatedBy = ?, type = ?, image = ? WHERE id = ?";
-	private static final String GET_BY_TYPE_SQL = "SELECT * FROM web_setting AS w WHERE w.type = ? ";
-	private static final String GET_BY_ID_SQL = "SELECT * FROM web_setting WHERE id = ?";
-	private static final String DELETE_BY_ID_SQL = "DELETE FROM web_setting  WHERE id= ? ";
-	private static final String SEARCH_LIST_SQL = "SELECT * FROM web_setting WHERE type LIKE ? LIMIT ? OFFSET ?";
-	private static final String COUNT_BY_NAME_SQL = "SELECT COUNT(id) AS totalRecord FROM web_setting WHERE type LIKE ?";
+public class AdsRepository {
+	private static final String INSERT_SQL = "INSERT INTO ads (images, createdBy, updatedBy, width, height, position, url) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	private static final String UPDATE_SQL = "UPDATE ads SET images = ?, updatedBy = ?, width = ?, height = ?, position = ?, url = ? WHERE id = ?";
+	private static final String GET_BY_POSITION_SQL = "SELECT * FROM ads AS a WHERE a.position = ? ";
+	private static final String GET_BY_ID_SQL = "SELECT * FROM ads WHERE id = ?";
+	private static final String DELETE_BY_ID_SQL = "DELETE FROM ads  WHERE id= ? ";
+	private static final String SEARCH_LIST_SQL = "SELECT * FROM ads WHERE position LIKE ? LIMIT ? OFFSET ?";
+	private static final String COUNT_BY_NAME_SQL = "SELECT COUNT(id) AS totalRecord FROM web_setting WHERE position LIKE ?";
 
-	public boolean create(SettingsModelRequest request, String username) {
+	public boolean create(AdsModelRequest request, String username) {
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)) {
 			// Set parameters.
-			preparedStatement.setString(1, request.getContent());;
+			preparedStatement.setString(1, request.getImages());;
 			preparedStatement.setString(2, username);
 			preparedStatement.setString(3, username);
-			preparedStatement.setString(4, request.getType());
-			preparedStatement.setString(5, request.getImage());
+			preparedStatement.setInt(4, request.getWidth());
+			preparedStatement.setInt(5, request.getHeight());
+			preparedStatement.setString(6, request.getPosition());
+			preparedStatement.setString(7, request.getUrl());
 			// Show SQL query.
 			System.out.println(preparedStatement);
 			// Execute query.
@@ -43,16 +45,19 @@ public class SettingsRepository {
 		}
 	}
 
-	public boolean update(Long id, SettingsModelRequest request, String username) {
+	public boolean update(Long id, AdsModelRequest request, String username) {
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
 			// Set parameters.
-			preparedStatement.setString(1, request.getContent());
-			preparedStatement.setString(2, username);	
-			preparedStatement.setString(3, request.getType());
-			preparedStatement.setString(4, request.getImage());
-			preparedStatement.setLong(5, id);
+			preparedStatement.setString(1, request.getImages());;
+			preparedStatement.setString(2, username);
+			preparedStatement.setInt(3, request.getWidth());
+			preparedStatement.setInt(4, request.getHeight());
+			preparedStatement.setString(5, request.getPosition());
+			preparedStatement.setString(6, request.getUrl());
+			preparedStatement.setLong(7, id);
+		
 			// Show SQL query.
 			System.out.println(preparedStatement);
 			// Execute query.
@@ -63,7 +68,7 @@ public class SettingsRepository {
 		}
 	}
 
-	public SettingsModelResponse getById(Long id) {
+	public AdsModelResponse getById(Long id) {
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID_SQL)) {
@@ -76,17 +81,19 @@ public class SettingsRepository {
 			if (!rs.isBeforeFirst()) {
 				return null;
 			}
-			SettingsModelResponse response = new SettingsModelResponse();
+			AdsModelResponse response = new AdsModelResponse();
 			while (rs.next()) {
 				response.setId(rs.getLong("id"));
-				response.setContent(rs.getString("content"));
+				response.setImages(rs.getString("images"));
 				response.setCreatedDate(rs.getString("createdDate"));
 				response.setUpdatedDate(rs.getString("updatedDate"));
 				response.setCreatedBy(rs.getString("createdBy"));
 				response.setUpdatedBy(rs.getString("updatedBy"));
-				response.setStatus(StatusEnum.valueOf(rs.getString("status")));
-				response.setType(rs.getString("type"));
-				response.setImage(rs.getString("image"));
+				response.setWidth(rs.getInt("width"));
+				response.setHeight(rs.getInt("height"));
+				response.setPosition(rs.getString("position"));
+				response.setUrl(rs.getString("url"));
+
 			}
 			return response;
 		} catch (Exception e) {
@@ -94,12 +101,12 @@ public class SettingsRepository {
 		}
 	}
 
-	public SettingsModelResponse getByType(String type) {
+	public AdsModelResponse getByPosition(String position) {
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_TYPE_SQL)) {
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_POSITION_SQL)) {
 			// Set parameters.
-			preparedStatement.setString(1, type);
+			preparedStatement.setString(1, position);
 			// Show SQL query.
 			System.out.println(preparedStatement);
 			// Execute query.
@@ -107,17 +114,18 @@ public class SettingsRepository {
 			if (!rs.isBeforeFirst()) {
 				return null;
 			}
-			SettingsModelResponse response = new SettingsModelResponse();
+			AdsModelResponse response = new AdsModelResponse();
 			while (rs.next()) {
 				response.setId(rs.getLong("id"));
-				response.setContent(rs.getString("content"));
+				response.setImages(rs.getString("images"));
 				response.setCreatedDate(rs.getString("createdDate"));
 				response.setUpdatedDate(rs.getString("updatedDate"));
 				response.setCreatedBy(rs.getString("createdBy"));
 				response.setUpdatedBy(rs.getString("updatedBy"));
-				response.setStatus(StatusEnum.valueOf(rs.getString("status")));
-				response.setType(rs.getString("type"));
-				response.setImage(rs.getString("image"));
+				response.setWidth(rs.getInt("width"));
+				response.setHeight(rs.getInt("height"));
+				response.setPosition(rs.getString("position"));
+				response.setUrl(rs.getString("url"));
 			}
 			return response;
 		} catch (Exception e) {
@@ -155,18 +163,19 @@ public class SettingsRepository {
 			// Execute query.
 			// Select records.
 			ResultSet rs = stmtSelect.executeQuery();
-			List<SettingsModelResponse> results = new ArrayList<SettingsModelResponse>();
+			List<AdsModelResponse> results = new ArrayList<AdsModelResponse>();
 			while (rs.next()) {
-				SettingsModelResponse response = new SettingsModelResponse();
+				AdsModelResponse response = new AdsModelResponse();
 				response.setId(rs.getLong("id"));
-				response.setContent(rs.getString("content"));
+				response.setImages(rs.getString("images"));
 				response.setCreatedDate(rs.getString("createdDate"));
 				response.setUpdatedDate(rs.getString("updatedDate"));
 				response.setCreatedBy(rs.getString("createdBy"));
 				response.setUpdatedBy(rs.getString("updatedBy"));
-				response.setStatus(StatusEnum.valueOf(rs.getString("status")));
-				response.setType(rs.getString("type"));
-				response.setImage(rs.getString("image"));
+				response.setWidth(rs.getInt("width"));
+				response.setHeight(rs.getInt("height"));
+				response.setPosition(rs.getString("position"));
+				response.setUrl(rs.getString("url"));
 				results.add(response);
 			}
 

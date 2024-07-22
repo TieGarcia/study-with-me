@@ -24,5 +24,10 @@
         Web Settings
       </a>
     </li>
+     <li class="nav-item">
+      <a href="${pageContext.request.contextPath}/page-admin/features/ads/index.jsp" class="sidebar-menu nav-link">
+        <i class="nav-icon fas fa-newspaper"></i>
+Ads      </a>
+    </li>
   </ul>
 </nav>
