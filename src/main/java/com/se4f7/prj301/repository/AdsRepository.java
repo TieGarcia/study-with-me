@@ -17,11 +17,11 @@ import com.se4f7.prj301.utils.DBUtil;
 public class AdsRepository {
 	private static final String INSERT_SQL = "INSERT INTO ads (images, createdBy, updatedBy, width, height, position, url) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	private static final String UPDATE_SQL = "UPDATE ads SET images = ?, updatedBy = ?, width = ?, height = ?, position = ?, url = ? WHERE id = ?";
-	private static final String GET_BY_POSITION_SQL = "SELECT * FROM ads AS a WHERE a.position = ? ";
+	private static final String GET_BY_POSITION_SQL = "SELECT * FROM ads WHERE position = ? ";
 	private static final String GET_BY_ID_SQL = "SELECT * FROM ads WHERE id = ?";
 	private static final String DELETE_BY_ID_SQL = "DELETE FROM ads  WHERE id= ? ";
 	private static final String SEARCH_LIST_SQL = "SELECT * FROM ads WHERE position LIKE ? LIMIT ? OFFSET ?";
-	private static final String COUNT_BY_NAME_SQL = "SELECT COUNT(id) AS totalRecord FROM web_setting WHERE position LIKE ?";
+	private static final String COUNT_BY_NAME_SQL = "SELECT COUNT(id) AS totalRecord FROM ads WHERE position LIKE ?";
 
 	public boolean create(AdsModelRequest request, String username) {
 		// Open connection and set SQL query into PreparedStatement.
@@ -172,6 +172,7 @@ public class AdsRepository {
 				response.setUpdatedDate(rs.getString("updatedDate"));
 				response.setCreatedBy(rs.getString("createdBy"));
 				response.setUpdatedBy(rs.getString("updatedBy"));
+				response.setStatus(StatusEnum.valueOf(rs.getString("status")));
 				response.setWidth(rs.getInt("width"));
 				response.setHeight(rs.getInt("height"));
 				response.setPosition(rs.getString("position"));

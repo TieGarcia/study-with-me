@@ -34,10 +34,11 @@
                <th>Create By</th>
               <th>Updated By</th>
               <th>Status</th>
-              <th>Width</th>
-              <th>Height</th>
-              <th>Position</th>
-              <th>Url</th>
+              <th>width</th>
+              <th>height</th>
+              <th>position</th>
+              <th>url</th>
+           
               <th style="width: 95px;">Actions</th>
             </tr>
           </thead>
@@ -63,21 +64,27 @@
           <label for="name">id</label> <input type="text" name="id" class="form-control" id="inpPostsId">
         </div>
         <div class="form-group">
-          <label for="name">Title</label> <input class="form-control" placeholder="Title" id="inpPostsTitle">
+          <label for="name">Position</label> <input class="form-control" placeholder="Title" id="inpPostsTitle">
+        </div>
+          <!-- Start Edit custom form -->
+        <div class="form-group">
+        <div class="form-group">
+          <label for="name">URl</label> <input class="form-control" placeholder="URl" id="inpUrlTitle">
+        </div>
+          <label for="name">Width</label> <input class="form-control" placeholder="Width" id="inpWidthTitle">
         </div>
         <div class="form-group">
-          <label for="name">Category</label> <select id="selPostsCategory">
-          </select>
+          <label for="name">Height</label> <input class="form-control" placeholder="Height" id="inpHeightTitle">
         </div>
+        <!-- End Edit custom form -->
+       
         <div class="form-group">
-          <label for="name">Banner</label>
+          <label for="name">Image</label>
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="inpPostsBanner"> <label class="custom-file-label" for="inpPostsBanner">Choose file</label>
           </div>
         </div>
-        <div class="form-group">
-          <textarea id="inpPostContent" class="form-control"></textarea>
-        </div>
+       
       </div>
       <!-- /.card-body -->
       <div class="card-footer">
@@ -98,4 +105,4 @@
     <!-- /.card -->
   </div>
 </div>
-<script src="${pageContext.request.contextPath}/page-admin/ads/posts/index.js"></script>
+<script src="${pageContext.request.contextPath}/page-admin/features/ads/index.js"></script>

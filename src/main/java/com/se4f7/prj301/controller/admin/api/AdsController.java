@@ -15,6 +15,7 @@ import com.se4f7.prj301.constants.QueryType;
 import com.se4f7.prj301.model.PaginationModel;
 import com.se4f7.prj301.model.request.AdsModelRequest;
 import com.se4f7.prj301.model.response.AdsModelResponse;
+import com.se4f7.prj301.model.response.SettingsModelResponse;
 import com.se4f7.prj301.service.AdsService;
 import com.se4f7.prj301.service.impl.AdsServiceImpl;
 import com.se4f7.prj301.utils.HttpUtil;
@@ -27,10 +28,10 @@ public class AdsController extends HttpServlet {
 
 	private static final long serialVersionUID = -331986167361646886L;
 
-	private AdsService settingsService;
+	private AdsService adsService;
 
 	public void init() {
-		settingsService = new AdsServiceImpl();
+		adsService = new AdsServiceImpl();
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class AdsController extends HttpServlet {
 			// Get username from header request.
 			String username = req.getAttribute("username").toString();
 			// Call service create a new Posts.
-			boolean result = settingsService.create(requestBody, req.getPart("images"), username);
+			boolean result = adsService.create(requestBody, req.getPart("images"), username);
 			ResponseUtil.success(resp, result);
 		} catch (Exception e) {
 			ResponseUtil.error(resp, e.getMessage());
@@ -60,7 +61,7 @@ public class AdsController extends HttpServlet {
 			// Get username from header request.
 			String username = req.getAttribute("username").toString();
 			// Call service update Posts.
-			boolean result = settingsService.update(req.getParameter("id"), requestBody, req.getPart("images"), username);
+			boolean result = adsService.update(req.getParameter("id"), requestBody, req.getPart("images"), username);
 			ResponseUtil.success(resp, result);
 		} catch (Exception e) {
 			ResponseUtil.error(resp, e.getMessage());
@@ -70,7 +71,7 @@ public class AdsController extends HttpServlet {
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		try {
-			boolean result = settingsService.deleteById(req.getParameter("id"));
+			boolean result = adsService.deleteById(req.getParameter("id"));
 			ResponseUtil.success(resp, result);
 		} catch (Exception e) {
 			ResponseUtil.error(resp, e.getMessage());
@@ -86,12 +87,12 @@ public class AdsController extends HttpServlet {
 				String name = req.getParameter("name");
 				String page = req.getParameter("page");
 				String size = req.getParameter("size");
-				PaginationModel results = settingsService.filter(page, size, name);
+				PaginationModel results = adsService.filter(page, size, name);
 				ResponseUtil.success(resp, results);
 				break;
 			case QueryType.GET_ONE:
 				String id = req.getParameter("id");
-				AdsModelResponse result = settingsService.getById(id);
+				AdsModelResponse result = adsService.getById(id);
 				ResponseUtil.success(resp, result);
 				break;
 				

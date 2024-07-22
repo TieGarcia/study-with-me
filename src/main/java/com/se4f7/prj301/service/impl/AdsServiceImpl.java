@@ -6,6 +6,7 @@ import com.se4f7.prj301.constants.ErrorMessage;
 import com.se4f7.prj301.model.PaginationModel;
 import com.se4f7.prj301.model.request.AdsModelRequest;
 import com.se4f7.prj301.model.response.AdsModelResponse;
+import com.se4f7.prj301.model.response.SettingsModelResponse;
 import com.se4f7.prj301.repository.AdsRepository;
 import com.se4f7.prj301.service.AdsService;
 import com.se4f7.prj301.utils.FileUtil;
@@ -85,7 +86,7 @@ public class AdsServiceImpl implements AdsService {
 
 	@Override
 	public AdsModelResponse getByPosition(String position) {
-
+		
 		AdsModelResponse oldAds = adsRepository.getByPosition(position);
 		if (oldAds == null) {
 			throw new RuntimeException(ErrorMessage.RECORD_NOT_FOUND);
