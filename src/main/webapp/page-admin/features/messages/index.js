@@ -47,8 +47,7 @@ $(document).ready(function() {
 							${record.status}
 						</span>
 					</td>`;
-					appendHTML += `<td>${record.messages}</td>`;
-					
+	                appendHTML += `<td>${record.message}</td>`;					
 
 					// Append action button Edit & Delete.
 					appendHTML +=

@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card card-primary">
       <div class="card-header">
-        <h3 class="card-title">Posts</h3>
+        <h3 class="card-title">Ads</h3>
       </div>
       <div class="row p-2">
         <div class="col-6">
@@ -64,7 +64,7 @@
           <label for="name">id</label> <input type="text" name="id" class="form-control" id="inpPostsId">
         </div>
         <div class="form-group">
-          <label for="name">Position</label> <input class="form-control" placeholder="Title" id="inpPostsTitle">
+          <label for="name">Position</label> <input class="form-control" placeholder="Position" id="inpPostsTitle">
         </div>
           <!-- Start Edit custom form -->
         <div class="form-group">
@@ -79,7 +79,7 @@
         <!-- End Edit custom form -->
        
         <div class="form-group">
-          <label for="name">Image</label>
+          <label for="name">Images</label>
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="inpPostsBanner"> <label class="custom-file-label" for="inpPostsBanner">Choose file</label>
           </div>

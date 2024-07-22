@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card card-primary">
       <div class="card-header">
-        <h3 class="card-title">Posts</h3>
+        <h3 class="card-title">Web Settings</h3>
       </div>
       <div class="row p-2">
         <div class="col-6">
@@ -56,7 +56,7 @@
   <div class="col-12">
     <div class="card card-primary">
       <div class="card-header">
-        <h3 class="card-title">Create/Edit Posts</h3>
+        <h3 class="card-title">Create/Edit Settings</h3>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
@@ -64,11 +64,11 @@
           <label for="name">id</label> <input type="text" name="id" class="form-control" id="inpPostsId">
         </div>
         <div class="form-group">
-          <label for="name">Title</label> <input class="form-control" placeholder="Title" id="inpPostsTitle">
+          <label for="name">Type</label> <input class="form-control" placeholder="Type" id="inpPostsTitle">
         </div>
        
         <div class="form-group">
-          <label for="name">Banner</label>
+          <label for="name">Image</label>
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="inpPostsBanner"> <label class="custom-file-label" for="inpPostsBanner">Choose file</label>
           </div>

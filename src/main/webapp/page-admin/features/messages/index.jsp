@@ -33,7 +33,7 @@
                <th>Create By</th>
               <th>Updated By</th>
               <th>Status</th>
-              <th>Messages</th>
+              <th>Message</th>
            
               <th style="width: 95px;">Actions</th>
             </tr>
