@@ -37,6 +37,7 @@ public class SettingsServiceImpl implements SettingsService {
 	public boolean update(String id, SettingsModelRequest request, Part image, String username) {
 		// Parse String to Long.
 		Long idNumber = StringUtil.parseLong("id", id);
+		
 		// Get old Posts.
 		SettingsModelResponse oldSettings = settingsRepository.getById(idNumber);
 		// If Posts is not exists cannot update so will throw Error.
@@ -91,7 +92,14 @@ public class SettingsServiceImpl implements SettingsService {
 		}
 		return oldSettings;
 	}
-
+	public SettingsModelResponse getById(String id) {
+		Long idNumber = StringUtil.parseLong("id", id);
+		SettingsModelResponse oldSettings = settingsRepository.getById(idNumber);
+		if (oldSettings == null) {
+			throw new RuntimeException(ErrorMessage.RECORD_NOT_FOUND);
+		}
+		return oldSettings;
+	}	
 	@Override
 	public PaginationModel filter(String page, String size, String name) {
 		int pageNumber = StringUtil.parseInt("Page", page);

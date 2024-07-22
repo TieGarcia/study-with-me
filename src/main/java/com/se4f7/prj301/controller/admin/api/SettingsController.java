@@ -90,10 +90,11 @@ public class SettingsController extends HttpServlet {
 				ResponseUtil.success(resp, results);
 				break;
 			case QueryType.GET_ONE:
-				String types = req.getParameter("types");
-				SettingsModelResponse result = settingsService.getByTypes(types);
+				String id = req.getParameter("id");
+				SettingsModelResponse result = settingsService.getById(id);
 				ResponseUtil.success(resp, result);
 				break;
+				
 			default:
 				ResponseUtil.error(resp, ErrorMessage.TYPE_INVALID);
 			}

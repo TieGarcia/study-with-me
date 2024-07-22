@@ -5,6 +5,7 @@ import javax.servlet.http.Part;
 
 import com.se4f7.prj301.model.PaginationModel;
 import com.se4f7.prj301.model.request.SettingsModelRequest;
+import com.se4f7.prj301.model.response.PostsModelResponse;
 import com.se4f7.prj301.model.response.SettingsModelResponse;
 
 public interface SettingsService {
@@ -15,7 +16,7 @@ public interface SettingsService {
 	public boolean deleteById(String id);
 
 	public SettingsModelResponse getByTypes(String types);
-
+	public SettingsModelResponse getById(String id);
 	public PaginationModel filter(String page, String size, String name);
 		
 }
