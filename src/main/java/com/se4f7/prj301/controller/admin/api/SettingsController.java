@@ -13,60 +13,64 @@ import javax.servlet.http.HttpServletResponse;
 import com.se4f7.prj301.constants.ErrorMessage;
 import com.se4f7.prj301.constants.QueryType;
 import com.se4f7.prj301.model.PaginationModel;
-
-import com.se4f7.prj301.model.request.WebSettingsModelRequest;
-
-import com.se4f7.prj301.model.response.WebSettingsModelResponse;
-import com.se4f7.prj301.service.WebSettingsService;
-import com.se4f7.prj301.service.impl.WebSettingsServiceImpl;
+import com.se4f7.prj301.model.request.SettingsModelRequest;
+import com.se4f7.prj301.model.response.SettingsModelResponse;
+import com.se4f7.prj301.service.SettingsService;
+import com.se4f7.prj301.service.impl.SettingsServiceImpl;
 import com.se4f7.prj301.utils.HttpUtil;
 import com.se4f7.prj301.utils.ResponseUtil;
 
 @WebServlet(urlPatterns = { "/admin/api/settings" })
-//Add @MultipartConfig for enable upload file.
+// Add @MultipartConfig for enable upload file.
 @MultipartConfig
-public class WebSettingsController extends HttpServlet {
+public class SettingsController extends HttpServlet {
 
 	private static final long serialVersionUID = -331986167361646886L;
 
-	private WebSettingsService webSettingsService;
+	private SettingsService settingsService;
+
 	public void init() {
-		webSettingsService = new WebSettingsServiceImpl();
+		settingsService = new SettingsServiceImpl();
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 		try {
 			// Get JSON payload from request.
 			// Parse JSON stringify from request to Java Class.
-			WebSettingsModelRequest requestBody = HttpUtil.ofFormData(req.getPart("payload"))
-					.toModel(WebSettingsModelRequest.class);
-			// Get username from header request
+			SettingsModelRequest requestBody = HttpUtil.ofFormData(req.getPart("payload"))
+					.toModel(SettingsModelRequest.class);
+			// Get username from header request.
 			String username = req.getAttribute("username").toString();
-			// Call service create a new web settings.
-			boolean result = webSettingsService.create(requestBody, req.getPart("image"), username);
+			// Call service create a new Posts.
+			boolean result = settingsService.create(requestBody, req.getPart("image"), username);
 			ResponseUtil.success(resp, result);
 		} catch (Exception e) {
-			// TODO: handle exception
-			ResponseUtil.success(resp, e.getMessage());
+			ResponseUtil.error(resp, e.getMessage());
 		}
 	}
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 		try {
 			// Get JSON payload from request.
 			// Parse JSON stringify from request to Java Class.
-			WebSettingsModelRequest requestBody = HttpUtil.ofFormData(req.getPart("payload"))
-					.toModel(WebSettingsModelRequest.class);
+			SettingsModelRequest requestBody = HttpUtil.ofFormData(req.getPart("payload"))
+					.toModel(SettingsModelRequest.class);
 			// Get username from header request.
 			String username = req.getAttribute("username").toString();
 			// Call service update Posts.
-			boolean result = webSettingsService.update(req.getParameter("id"), requestBody, req.getPart("image"), username);
+			boolean result = settingsService.update(req.getParameter("id"), requestBody, req.getPart("image"), username);
+			ResponseUtil.success(resp, result);
+		} catch (Exception e) {
+			ResponseUtil.error(resp, e.getMessage());
+		}
+	}
+
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		try {
+			boolean result = settingsService.deleteById(req.getParameter("id"));
 			ResponseUtil.success(resp, result);
 		} catch (Exception e) {
 			ResponseUtil.error(resp, e.getMessage());
@@ -75,8 +79,6 @@ public class WebSettingsController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 		try {
 			String type = req.getParameter("type");
 			switch (type) {
@@ -84,12 +86,12 @@ public class WebSettingsController extends HttpServlet {
 				String name = req.getParameter("name");
 				String page = req.getParameter("page");
 				String size = req.getParameter("size");
-				PaginationModel results = webSettingsService.filter(page, size, name);
+				PaginationModel results = settingsService.filter(page, size, name);
 				ResponseUtil.success(resp, results);
 				break;
 			case QueryType.GET_ONE:
 				String types = req.getParameter("types");
-				WebSettingsModelResponse result = webSettingsService.getByType(types);
+				SettingsModelResponse result = settingsService.getByTypes(types);
 				ResponseUtil.success(resp, result);
 				break;
 			default:
@@ -99,17 +101,4 @@ public class WebSettingsController extends HttpServlet {
 			ResponseUtil.error(resp, e.getMessage());
 		}
 	}
-	
-	@Override
-	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	
-		try {
-			boolean result = webSettingsService.deleteById(req.getParameter("id"));
-			ResponseUtil.success(resp, result);
-		} catch (Exception e) {
-			ResponseUtil.error(resp, e.getMessage());
-		}
-	}
-	
 }

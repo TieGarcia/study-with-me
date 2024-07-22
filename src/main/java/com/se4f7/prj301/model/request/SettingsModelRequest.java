@@ -2,18 +2,18 @@ package com.se4f7.prj301.model.request;
 
 
 
-public class WebSettingsModelRequest {
+public class SettingsModelRequest {
 	private String content;
-	private String type;
+	private String types;
 	private String image;
-	public WebSettingsModelRequest() {
+	public SettingsModelRequest() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public WebSettingsModelRequest(String content, String type, String image) {
+	public SettingsModelRequest(String content, String types, String image) {
 		super();
 		this.content = content;	
-		this.type = type;
+		this.types = types;
 		this.image = image;		
 	}
 	public String getContent() {
@@ -28,11 +28,11 @@ public class WebSettingsModelRequest {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	public String getType() {
-		return type;
+	public String getTypes() {
+		return types;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setTypes(String types) {
+		this.types = types;
 	}
 	
 }
