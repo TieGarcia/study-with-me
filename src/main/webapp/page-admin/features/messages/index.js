@@ -14,64 +14,64 @@ $(document).ready(function() {
 	}
 
 	// Function search and pagination Posts. 
-	this.getPosts = function(page = 0, size = defaultPageSize, name = '') {
-		// Use Ajax call API search posts (/assets/http.js).
-		Http.get(`${domain}/admin/api/messages?type=filter&page=${page}&size=${size}&name=${name}`)
-			.then(res => {
-				let appendHTML = '';
-				// Clear all elements in table content.
-				$('#tblPosts').empty();
-				// Reset pagination.
-				$pagination.twbsPagination('destroy');
-				// Check api error or no data response.
-				if (!res.success || res.data.totalRecord === 0) {
-					// Append text No Data when records empty;
-					$('#tblPosts').append(`<tr><td colspan='9' style='text-align: center;'>No Data</td></tr>`);
-					// End function.
-					return;
-				}
+this.getPosts = function(page = 0, size = defaultPageSize, name = '') {
+    // Use Ajax call API search posts (/assets/http.js).
+    Http.get(`${domain}/admin/api/messages?type=filter&page=${page}&size=${size}&name=${name}`)
+        .then(res => {
+            let appendHTML = '';
+            // Clear all elements in table content.
+            $('#tblPosts').empty();
+            // Reset pagination.
+            $pagination.twbsPagination('destroy');
+            // Check api error or no data response.
+            if (!res.success || res.data.totalRecord === 0) {
+                // Append text No Data when records empty;
+                $('#tblPosts').append(`<tr><td colspan='9' style='text-align: center;'>No Data</td></tr>`);
+                // End function.
+                return;
+            }
 
-				// Build table content from data responses.
-				for (const record of res.data.records) {
-					appendHTML += '<tr>';
-					appendHTML += `<td>${record.id}</td>`;
-					appendHTML += `<td>${record.email}</td>`;
-					appendHTML += `<td>${record.subject}</td>`;
-		            appendHTML += `<td>${record.message}</td>`;	
-					appendHTML += `<td>${record.createdDate}</td>`;
-				
-					
+            // Build table content from data responses.
+            for (const record of res.data.records) {
+                const createdDate = new Date(record.createdDate);
+                const timeAgoString = timeAgo(createdDate);
+                
+                appendHTML += '<tr>';
+                appendHTML += `<td>${record.id}</td>`;
+                appendHTML += `<td>${record.email}</td>`;
+                appendHTML += `<td>${record.subject}</td>`;
+                appendHTML += `<td>${record.message}</td>`;
+                appendHTML += `<td>${timeAgoString}</td>`;
+                
+                // Append action button Edit & Delete.
+                appendHTML +=
+                    `<td class='text-right'>
+                        <a class='btn btn-danger btn-sm' onclick='deletePosts(${record.id})'>
+                            <i class='fas fa-trash'></i>
+                        </a>
+                    </td>`;
+                appendHTML += '</tr>';
+            }
 
-					// Append action button Edit & Delete.
-					appendHTML +=
-						`<td class='text-right'>
-							
-							<a class='btn btn-danger btn-sm' onclick='deletePosts(${record.id})'>
-								<i class='fas fa-trash'></i>
-							</a>
-						</td>`;
-					appendHTML += '</tr>';
-				}
+            // Build pagination with twbsPagination.
+            $pagination.twbsPagination($.extend({}, defaultOpts, {
+                startPage: res.data.page + 1,
+                totalPages: Math.ceil(res.data.totalRecord / res.data.size)
+            }));
+            // Add event listener when page change.
+            $pagination
+                .on('page', (event, num) => {
+                    this.getPosts(num - 1, defaultPageSize, inpSearchPostsName);
+                });
 
-				// Build pagination with twbsPagination.
-				// More detail: https://josecebe.github.io/twbs-pagination/
-				$pagination.twbsPagination($.extend({}, defaultOpts, {
-					startPage: res.data.page + 1,
-					totalPages: Math.ceil(res.data.totalRecord / res.data.size)
-				}));
-				// Add event listener when page change.
-				$pagination
-					.on('page', (event, num) => {
-						this.getPosts(num - 1, defaultPageSize, inpSearchPostsName);
-					});
+            // Append html table into tBody.
+            $('#tblPosts').append(appendHTML);
+        })
+        .catch(err => {
+            toastr.error(err.errMsg);
+        });
+}
 
-				// Append html table into tBody.
-				$('#tblPosts').append(appendHTML);
-			})
-			.catch(err => {
-				toastr.error(err.errMsg);
-			})
-	}
 
 	// Function delete posts by id.
 	this.deletePosts = function(id) {
@@ -259,3 +259,29 @@ $(document).ready(function() {
 	this.swicthViewPosts(true);
 
 });
+function timeAgo(date) {
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+
+    let interval = Math.floor(seconds / 31536000); // 60 * 60 * 24 * 365
+    if (interval >= 1) {
+        return interval === 1 ? "a year ago" : `${interval} years ago`;
+    }
+    interval = Math.floor(seconds / 2592000); // 60 * 60 * 24 * 30
+    if (interval >= 1) {
+        return interval === 1 ? "a month ago" : `${interval} months ago`;
+    }
+    interval = Math.floor(seconds / 86400); // 60 * 60 * 24
+    if (interval >= 1) {
+        return interval === 1 ? "a day ago" : `${interval} days ago`;
+    }
+    interval = Math.floor(seconds / 3600); // 60 * 60
+    if (interval >= 1) {
+        return interval === 1 ? "an hour ago" : `${interval} hours ago`;
+    }
+    interval = Math.floor(seconds / 60); // 60
+    if (interval >= 1) {
+        return interval === 1 ? "a minute ago" : `${interval} minutes ago`;
+    }
+    return seconds === 1 ? "a second ago" : `${Math.floor(seconds)} seconds ago`;
+}

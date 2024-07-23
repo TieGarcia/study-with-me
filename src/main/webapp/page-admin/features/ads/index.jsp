@@ -82,7 +82,8 @@
         <div class="form-group">
           <label for="name">Images</label>
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inpPostsBanner" multiple> 
+                <input type="file" class="custom-file-input" id="inpPostsBanner" name="images" multiple>
+ 
             <label class="custom-file-label" for="inpPostsBanner">Choose file(s)</label>
           </div>
         </div>

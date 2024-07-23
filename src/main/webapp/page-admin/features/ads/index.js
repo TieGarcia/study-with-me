@@ -46,7 +46,12 @@ $(document).ready(function() {
 						</span>
 					</td>`;
 					appendHTML += `<td>${record.url}</td>`;
-					appendHTML += `<td>${record.images}</td>`;
+					
+					
+					let imageLists = record.images.split(',');
+				    let imagesHTML = imageLists.map(img => `<div>${img}</div>`).join('');
+				    appendHTML += `<td>${imagesHTML}</td>`;
+				
 					appendHTML += `<td>${record.updatedBy}</td>`;
 					appendHTML += `<td>${record.updatedDate}</td>`;
 					
@@ -139,55 +144,42 @@ $(document).ready(function() {
 
 	// Function create/edit posts.
 	this.savePosts = function() {
-		
-		const currentId = $('#inpPostsId').val();
-		// Get value from input and build a JSON Payload.
-		const payload = {
-			'position': $('#inpPostsTitle').val(),
-			'width':  $('#inpWidthTitle').val(),
-			'height': $('#inpHeightTitle').val(),
-			'url':$('#inpUrlTitle').val()
-		}
-		// Create FormData and append files & JSON stringify.
-		// More detail: https://viblo.asia/p/upload-file-ajax-voi-formdata-LzD5dL2e5jY
-		// More detail with Postman: https://stackoverflow.com/questions/16015548/how-to-send-multipart-form-data-request-using-postman
-		var formData = new FormData();
-		// Append file selected from input.
-		if ($('#inpPostsBanner')[0]) {
-			formData.append('images', $('#inpPostsBanner')[0].files[0]);
-		}
-		// Append payload posts info.
-		formData.append('payload', JSON.stringify(payload));
-		if (currentId) {
-			// Read detail additional function putFormData in file: /assets/http.js
-			Http.putFormData(`${domain}/admin/api/ads?id=${currentId}`, formData)
-				.then(res => {
-					if (res.success) {
-						this.swicthViewPosts(true);
-						toastr.success(`Update posts success !`)
-					} else {
-						toastr.error(res.errMsg);
-					}
-				})
-				.catch(err => {
-					toastr.error(err.errMsg);
-				});
-		} else {
-			// Read detail additional function postFormData in file: /assets/http.js
-			Http.postFormData(`${domain}/admin/api/ads`, formData)
-				.then(res => {
-					if (res.success) {
-						this.swicthViewPosts(true);
-						toastr.success(`Create posts success !`)
-					} else {
-						toastr.error(res.errMsg);
-					}
-				})
-				.catch(err => {
-					toastr.error(err.errMsg);
-				});
-		}
-	};
+    const currentId = $('#inpPostsId').val();
+    const payload = {
+        'position': $('#inpPostsTitle').val(),
+        'width': $('#inpWidthTitle').val(),
+        'height': $('#inpHeightTitle').val(),
+        'url': $('#inpUrlTitle').val()
+    };
+
+    var formData = new FormData();
+    
+    // Append multiple files
+    const files = $('#inpPostsBanner')[0].files;
+    for (let i = 0; i < files.length; i++) {
+        formData.append('images', files[i]);
+    }
+
+    // Append payload
+    formData.append('payload', JSON.stringify(payload));
+
+    const url = currentId ? `${domain}/admin/api/ads?id=${currentId}` : `${domain}/admin/api/ads`;
+    const method = currentId ? Http.putFormData : Http.postFormData;
+    
+    method(url, formData)
+        .then(res => {
+            if (res.success) {
+                this.swicthViewPosts(true);
+                toastr.success(currentId ? 'Update posts success!' : 'Create posts success!');
+            } else {
+                toastr.error(res.errMsg);
+            }
+        })
+        .catch(err => {
+            toastr.error(err.errMsg);
+        });
+};
+
 	// TODO: Handle after.
 	this.draftPosts = function() {
 		alert("Làm biếng chưa có code");
@@ -266,11 +258,10 @@ $(document).ready(function() {
 	// Fix issues Bootstrap 4 not show file name.
 	// More detail: https://stackoverflow.com/questions/48613992/bootstrap-4-file-input-doesnt-show-the-file-name
 	$('#inpPostsBanner').change(function(e) {
-		if (e.target.files.length) {
-			// Replace the "Choose a file" label
-			$(this).next('.custom-file-label').html(e.target.files[0].name);
-		}
-	});
+    let fileNames = Array.from(e.target.files).map(file => file.name).join(', ');
+    $(this).next('.custom-file-label').html(fileNames);
+});
+
 
 	// Set default view mode is table.
 	this.swicthViewPosts(true);
