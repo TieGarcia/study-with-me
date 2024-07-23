@@ -35,19 +35,12 @@ $(document).ready(function() {
 				for (const record of res.data.records) {
 					appendHTML += '<tr>';
 					appendHTML += `<td>${record.id}</td>`;
-					appendHTML += `<td>${record.subject}</td>`;
 					appendHTML += `<td>${record.email}</td>`;
+					appendHTML += `<td>${record.subject}</td>`;
+		            appendHTML += `<td>${record.message}</td>`;	
 					appendHTML += `<td>${record.createdDate}</td>`;
-					appendHTML += `<td>${record.updatedDate}</td>`;
-					appendHTML += `<td>${record.createdBy}</td>`;
-					appendHTML += `<td>${record.updatedBy}</td>`;
-					appendHTML +=
-						`<td>
-						<span class='badge ${record.status.toLocaleLowerCase() === 'active' ? 'bg-success' : 'bg-danger'}'>
-							${record.status}
-						</span>
-					</td>`;
-	                appendHTML += `<td>${record.message}</td>`;					
+				
+					
 
 					// Append action button Edit & Delete.
 					appendHTML +=
@@ -83,19 +76,25 @@ $(document).ready(function() {
 	// Function delete posts by id.
 	this.deletePosts = function(id) {
 		// Use Ajax call API get posts by id (/assets/http.js).
+				 if (confirm("Are you sure?")) {
+
 		Http.delete(`${domain}/admin/api/messages?id=${id}`)
 			.then(res => {
 				if (res.success) {
 					this.swicthViewPosts(true);
-					toastr.success('Delete posts success !')
+					toastr.success('Delete messages success !')
 				} else {
 					toastr.error(res.errMsg);
 				}
 			})
 			.catch(err => {
 				toastr.error(err.errMsg);
-			})
-	}
+			});
+	} else {
+        // If don't confirm cancel
+        toastr.info('Canceled delete messages');
+    }
+}
 
 	// Call API get posts by id.
 	this.getPostsById = function(id) {
@@ -238,9 +237,9 @@ $(document).ready(function() {
 			$('#posts-form').css('display', 'block');
 			if (id == null) {
 				$('#inpPostsTitle').val(null);
-				$('#selPostsCategory').val(null);
+				$('#inpEmailTitle').val(null);
 				$('#inpPostsBanner').val(null);
-				$('#inpPostContent').summernote('code', '');
+				$('#inpMessageTitle').val(null);
 			} else {
 				this.getPostsById(id);
 			}

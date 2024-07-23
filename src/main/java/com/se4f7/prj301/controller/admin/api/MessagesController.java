@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.se4f7.prj301.constants.ErrorMessage;
 import com.se4f7.prj301.constants.QueryType;
 import com.se4f7.prj301.model.PaginationModel;
+import com.se4f7.prj301.model.request.MessagesModelRequest;
 import com.se4f7.prj301.model.response.MessagesModelResponse;
 import com.se4f7.prj301.service.MessagesService;
 import com.se4f7.prj301.service.impl.MessagesServiceImpl;
+import com.se4f7.prj301.utils.HttpUtil;
 import com.se4f7.prj301.utils.ResponseUtil;
 
 @WebServlet(urlPatterns = { "/admin/api/messages" })
@@ -26,7 +28,29 @@ public class MessagesController extends HttpServlet {
 	public void init() {
 		messagesService = new MessagesServiceImpl();
 	}
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		try {
+			MessagesModelRequest requestBody = HttpUtil.of(req.getReader()).toModel(MessagesModelRequest.class);
+			String username = req.getAttribute("username").toString();
+			boolean result = messagesService.create(requestBody, username);
+			ResponseUtil.success(resp, result);
+		} catch (Exception e) {
+			ResponseUtil.error(resp, e.getMessage());
+		}
+	}
 
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		try {
+			MessagesModelRequest requestBody = HttpUtil.of(req.getReader()).toModel(MessagesModelRequest.class);
+			String username = req.getAttribute("username").toString();
+			boolean result = messagesService.update(req.getParameter("id"), requestBody, username);
+			ResponseUtil.success(resp, result);
+		} catch (Exception e) {
+			ResponseUtil.error(resp, e.getMessage());
+		}
+	}
 	
 
 	@Override

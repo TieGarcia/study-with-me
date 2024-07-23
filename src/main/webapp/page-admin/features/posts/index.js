@@ -85,6 +85,8 @@ $(document).ready(function() {
 	// Function delete posts by id.
 	this.deletePosts = function(id) {
 		// Use Ajax call API get posts by id (/assets/http.js).
+				 if (confirm("Are you sure?")) {
+
 		Http.delete(`${domain}/admin/api/posts?id=${id}`)
 			.then(res => {
 				if (res.success) {
@@ -96,8 +98,12 @@ $(document).ready(function() {
 			})
 			.catch(err => {
 				toastr.error(err.errMsg);
-			})
-	}
+			});
+	} else {
+        // If don't confirm cancel
+        toastr.info('Canceled delete posts');
+    }
+}
 
 	// Call API get posts by id.
 	this.getPostsById = function(id) {

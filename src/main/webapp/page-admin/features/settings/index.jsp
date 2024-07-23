@@ -28,17 +28,13 @@
           <thead>
             <tr>
               <th>Id</th>
-              <th>Content</th>
-              <th>Create Date</th>
-              <th>Updated Date</th>
-               <th>Create By</th>
+              <th>Type</th>
+               <th>Image URL</th>
+           <th>Status</th>
+           
               <th>Updated By</th>
-            
-              <th>Status</th>
-              <th>Type </th>
-              <th>Image</th>
-              
-              
+               <th>Updated Date</th>
+
               <th style="width: 95px;">Actions</th>
             </tr>
           </thead>
@@ -61,7 +57,7 @@
       <!-- /.card-header -->
       <div class="card-body">
         <div class="form-group" style="display: none">
-          <label for="name">id</label> <input type="text" name="id" class="form-control" id="inpPostsId">
+          <label for="name">Id</label> <input type="text" name="id" class="form-control" id="inpPostsId">
         </div>
         <div class="form-group">
           <label for="name">Type</label> <input class="form-control" placeholder="Type" id="inpPostsTitle">

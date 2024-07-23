@@ -93,6 +93,8 @@ $(document).ready(function() {
 
 	// Call API delete category.
 	this.deleteCategory = function(id) {
+				 if (confirm("Are you sure?")) {
+
 		Http.delete(`${domain}/admin/api/category?id=${id}`)
 			.then(res => {
 				if (res.success) {
@@ -104,8 +106,12 @@ $(document).ready(function() {
 			})
 			.catch(err => {
 				toastr.error(err.errMsg);
-			})
-	}
+			});
+		} else {
+        // If don't confirm cancel
+        toastr.info('Canceled delete category');
+    }
+}
 
 	// Call API get category by id.
 	this.getCategoryById = function(id) {

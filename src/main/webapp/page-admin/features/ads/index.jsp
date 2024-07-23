@@ -28,17 +28,15 @@
           <thead>
             <tr>
               <th>Id</th>
+               <th>Position</th>
+               <th>Width</th>
+              <th>Height</th>
+               <th>Status</th>
+               <th>Url</th>
               <th>Images</th>
-              <th>Create Date</th>
+               <th>Updated By</th>
               <th>Updated Date</th>
-               <th>Create By</th>
-              <th>Updated By</th>
-              <th>Status</th>
-              <th>width</th>
-              <th>height</th>
-              <th>position</th>
-              <th>url</th>
-           
+             
               <th style="width: 95px;">Actions</th>
             </tr>
           </thead>
@@ -56,7 +54,7 @@
   <div class="col-12">
     <div class="card card-primary">
       <div class="card-header">
-        <h3 class="card-title">Create/Edit Posts</h3>
+        <h3 class="card-title">Create/Edit Ads</h3>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
@@ -66,22 +64,26 @@
         <div class="form-group">
           <label for="name">Position</label> <input class="form-control" placeholder="Position" id="inpPostsTitle">
         </div>
+        
           <!-- Start Edit custom form -->
-        <div class="form-group">
-        <div class="form-group">
-          <label for="name">URl</label> <input class="form-control" placeholder="URl" id="inpUrlTitle">
-        </div>
+           <div class="form-group">
           <label for="name">Width</label> <input class="form-control" placeholder="Width" id="inpWidthTitle">
         </div>
         <div class="form-group">
           <label for="name">Height</label> <input class="form-control" placeholder="Height" id="inpHeightTitle">
         </div>
+        <div class="form-group">
+       
+          <label for="name">URl</label> <input class="form-control" placeholder="URl" id="inpUrlTitle">
+        </div>
+        
         <!-- End Edit custom form -->
        
         <div class="form-group">
           <label for="name">Images</label>
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="inpPostsBanner"> <label class="custom-file-label" for="inpPostsBanner">Choose file</label>
+            <input type="file" class="custom-file-input" id="inpPostsBanner" multiple> 
+            <label class="custom-file-label" for="inpPostsBanner">Choose file(s)</label>
           </div>
         </div>
        

@@ -35,22 +35,18 @@ $(document).ready(function() {
 				for (const record of res.data.records) {
 					appendHTML += '<tr>';
 					appendHTML += `<td>${record.id}</td>`;
-					appendHTML += `<td>${record.content}</td>`;	
-					appendHTML += `<td>${record.createdDate}</td>`;
-					appendHTML += `<td>${record.updatedDate}</td>`;
-					appendHTML += `<td>${record.createdBy}</td>`;
-					appendHTML += `<td>${record.updatedBy}</td>`;
-				
-					
+					appendHTML += `<td>${record.type}</td>`;	
+					appendHTML += `<td>${record.image}</td>`;	
+
+
 					appendHTML +=
 						`<td>
 						<span class='badge ${record.status.toLocaleLowerCase() === 'active' ? 'bg-success' : 'bg-danger'}'>
 							${record.status}
 						</span>
 					</td>`;
-					appendHTML += `<td>${record.type}</td>`;
-					appendHTML += `<td>${record.image}</td>`;
-					
+				appendHTML += `<td>${record.updatedBy}</td>`;
+					appendHTML += `<td>${record.updatedDate}</td>`;
 
 					// Append action button Edit & Delete.
 					appendHTML +=
@@ -88,19 +84,24 @@ $(document).ready(function() {
 	// Function delete posts by id.
 	this.deletePosts = function(id) {
 		// Use Ajax call API get posts by id (/assets/http.js).
+		 if (confirm("Are you sure?")) {
 		Http.delete(`${domain}/admin/api/settings?id=${id}`)
 			.then(res => {
 				if (res.success) {
 					this.swicthViewPosts(true);
-					toastr.success('Delete posts success !')
+					toastr.success('Delete settings success !')
 				} else {
 					toastr.error(res.errMsg);
 				}
 			})
 			.catch(err => {
 				toastr.error(err.errMsg);
-			})
-	}
+			});
+	} else {
+        // If don't confirm cancel
+        toastr.info('Canceled delete settings');
+    }
+}
 
 	// Call API get posts by id.
 	this.getPostsById = function(id) {
@@ -240,7 +241,7 @@ $(document).ready(function() {
 			$('#posts-form').css('display', 'block');
 			if (id == null) {
 				$('#inpPostsTitle').val(null);
-				$('#selPostsCategory').val(null);
+			
 				$('#inpPostsBanner').val(null);
 				$('#inpPostContent').summernote('code', '');
 			} else {

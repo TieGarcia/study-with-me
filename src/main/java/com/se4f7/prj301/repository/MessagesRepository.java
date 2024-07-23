@@ -14,14 +14,53 @@ import com.se4f7.prj301.model.response.MessagesModelResponse;
 import com.se4f7.prj301.utils.DBUtil;
 
 public class MessagesRepository {
-	
+	private static final String INSERT_SQL = "INSERT INTO messages (subject, email, message, createdBy) VALUES (?, ?, ?, ?)";
+	private static final String UPDATE_SQL = "UPDATE messages SET subject = ?, email = ?, message = ?, updatedBy = ? WHERE id = ?";
 	private static final String GET_BY_ID_SQL = "SELECT * FROM messages WHERE id = ?";
-	private static final String GET_BY_SUBJECT_SQL = "SELECT * FROM messages WHERE subject = ?";
+	private static final String GET_BY_EMAIL_SQL = "SELECT * FROM messages WHERE email = ?";
 	private static final String DELETE_BY_ID_SQL = "DELETE FROM messages WHERE id = ?";
-	private static final String SEARCH_LIST_SQL = "SELECT * FROM messages WHERE subject LIKE ? LIMIT ? OFFSET ?";
-	private static final String COUNT_BY_NAME_SQL = "SELECT COUNT(id) AS totalRecord FROM messages WHERE subject LIKE ?";
+	private static final String SEARCH_LIST_SQL = "SELECT * FROM messages WHERE email LIKE ? LIMIT ? OFFSET ?";
+	private static final String COUNT_BY_NAME_SQL = "SELECT COUNT(id) AS totalRecord FROM messages WHERE email LIKE ?";
 
-	
+	public boolean create(MessagesModelRequest request, String username) {
+		// Open connection and set SQL query into PreparedStatement.
+		try (Connection connection = DBUtil.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)) {
+			// Set parameters.
+			preparedStatement.setString(1, request.getSubject());
+			preparedStatement.setString(2, request.getEmail());
+			preparedStatement.setString(3, request.getMessage());
+			preparedStatement.setString(4, username);
+			// Show SQL query.
+			System.out.println(preparedStatement);
+			// Execute query.
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			throw new RuntimeException(ErrorMessage.SQL_ERROR + e.getMessage());
+		}
+	}
+
+	public boolean update(Long id, MessagesModelRequest request, String username) {
+		// Open connection and set SQL query into PreparedStatement.
+		try (Connection connection = DBUtil.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
+			// Set parameters.
+			preparedStatement.setString(1, request.getSubject());
+			preparedStatement.setString(2, request.getEmail());
+			preparedStatement.setString(3, request.getMessage());
+			preparedStatement.setString(4, username);
+			preparedStatement.setLong(5, id);
+			// Show SQL query.
+			System.out.println(preparedStatement);
+			// Execute query.
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			throw new RuntimeException(ErrorMessage.SQL_ERROR + e.getMessage());
+		}
+	}
+
 
 	public MessagesModelResponse getById(Long id) {
 		// Open connection and set SQL query into PreparedStatement.
@@ -54,12 +93,12 @@ public class MessagesRepository {
 		}
 	}
 
-	public MessagesModelResponse getBySubject(String subject) {
+	public MessagesModelResponse getByEmail(String email) {
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_SUBJECT_SQL)) {
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_EMAIL_SQL)) {
 			// Set parameters.
-			preparedStatement.setString(1, subject);
+			preparedStatement.setString(1, email);
 			// Show SQL query.
 			System.out.println(preparedStatement);
 			// Execute query.

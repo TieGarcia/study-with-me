@@ -26,15 +26,11 @@
           <thead>
             <tr>
               <th>Id</th>
-              <th>Subject</th>
               <th>Email</th>
-              <th>Create Date</th>
-              <th>Updated Date</th>
-               <th>Create By</th>
-              <th>Updated By</th>
-              <th>Status</th>
-              <th>Message</th>
-           
+            <th>Subject</th>
+             <th>Message</th>
+              <th>Created Date</th>
+              
               <th style="width: 95px;">Actions</th>
             </tr>
           </thead>
@@ -57,10 +53,10 @@
       <!-- /.card-header -->
       <div class="card-body">
         <div class="form-group" style="display: none">
-          <label for="name">id</label> <input type="text" name="id" class="form-control" id="inpPostsId">
+          <label for="name">Id</label> <input type="text" name="id" class="form-control" id="inpPostsId">
         </div>
         <div class="form-group">
-          <label for="name">Subject</label> <input class="form-control" placeholder="Title" id="inpPostsTitle">
+          <label for="name">Subject</label> <input class="form-control" placeholder="Subject" id="inpPostsTitle">
         </div>
           <!-- Start Edit custom form -->
         

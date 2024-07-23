@@ -35,21 +35,21 @@ $(document).ready(function() {
 				for (const record of res.data.records) {
 					appendHTML += '<tr>';
 					appendHTML += `<td>${record.id}</td>`;
-					appendHTML += `<td>${record.images}</td>`;
-					appendHTML += `<td>${record.createdDate}</td>`;
-					appendHTML += `<td>${record.updatedDate}</td>`;
-					appendHTML += `<td>${record.createdBy}</td>`;
-					appendHTML += `<td>${record.updatedBy}</td>`;
+					appendHTML += `<td>${record.position}</td>`;
+					appendHTML += `<td>${record.width}</td>`;
+					appendHTML += `<td>${record.height}</td>`;
+					
 					appendHTML +=
 						`<td>
 						<span class='badge ${record.status.toLocaleLowerCase() === 'active' ? 'bg-success' : 'bg-danger'}'>
 							${record.status}
 						</span>
 					</td>`;
-					appendHTML += `<td>${record.width}</td>`;
-					appendHTML += `<td>${record.height}</td>`;
-					appendHTML += `<td>${record.position}</td>`;
 					appendHTML += `<td>${record.url}</td>`;
+					appendHTML += `<td>${record.images}</td>`;
+					appendHTML += `<td>${record.updatedBy}</td>`;
+					appendHTML += `<td>${record.updatedDate}</td>`;
+					
 
 					// Append action button Edit & Delete.
 					appendHTML +=
@@ -86,20 +86,27 @@ $(document).ready(function() {
 
 	// Function delete posts by id.
 	this.deletePosts = function(id) {
-		// Use Ajax call API get posts by id (/assets/http.js).
-		Http.delete(`${domain}/admin/api/ads?id=${id}`)
-			.then(res => {
-				if (res.success) {
-					this.swicthViewPosts(true);
-					toastr.success('Delete posts success !')
-				} else {
-					toastr.error(res.errMsg);
-				}
-			})
-			.catch(err => {
-				toastr.error(err.errMsg);
-			})
-	}
+    // Show up popup
+    if (confirm("Are you sure?")) {
+        // If confirm then delete ads
+        Http.delete(`${domain}/admin/api/ads?id=${id}`)
+            .then(res => {
+                if (res.success) {
+                    this.swicthViewPosts(true);
+                    toastr.success('Delete ads success!');
+                } else {
+                    toastr.error(res.errMsg);
+                }
+            })
+            .catch(err => {
+                toastr.error(err.errMsg);
+            });
+    } else {
+        // If don't confirm cancel
+        toastr.info('Canceled delete ads');
+    }
+}
+
 
 	// Call API get posts by id.
 	this.getPostsById = function(id) {
@@ -113,8 +120,8 @@ $(document).ready(function() {
 					$('#inpPostsTitle').val(res.data.position);
 					$('#inpWidthTitle').val(res.data.width);
 					$('#inpHeightTitle').val(res.data.height);
-					$('#inpWidthTitle').val(res.data.width);
-					$('#inpUrlTitle').val(res.data.position);
+			
+					$('#inpUrlTitle').val(res.data.url);
 					// Set value for box selects category.
 					// More detail: https://select2.org/programmatic-control/add-select-clear-items			
 					
@@ -132,6 +139,7 @@ $(document).ready(function() {
 
 	// Function create/edit posts.
 	this.savePosts = function() {
+		
 		const currentId = $('#inpPostsId').val();
 		// Get value from input and build a JSON Payload.
 		const payload = {
@@ -184,6 +192,7 @@ $(document).ready(function() {
 	this.draftPosts = function() {
 		alert("Làm biếng chưa có code");
 	}
+	
 	// Using select2 query data categories.
 	// More detail: https://select2.org/data-sources/ajax
 	this.initSelect2Category = function() {
@@ -244,9 +253,10 @@ $(document).ready(function() {
 			$('#posts-form').css('display', 'block');
 			if (id == null) {
 				$('#inpPostsTitle').val(null);
-				$('#selPostsCategory').val(null);
+				$('#inpWidthTitle').val(null);
+				$('#inpHeightTitle').val(null);
 				$('#inpPostsBanner').val(null);
-				$('#inpPostContent').summernote('code', '');
+				$('#inpUrlTitle').val(null);
 			} else {
 				this.getPostsById(id);
 			}
