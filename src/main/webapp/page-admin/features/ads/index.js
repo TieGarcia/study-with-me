@@ -48,9 +48,9 @@ $(document).ready(function() {
 					appendHTML += `<td>${record.url}</td>`;
 					
 					
-					let imageLists = record.images.split(',');
-				    let imagesHTML = imageLists.map(img => `<div>${img}</div>`).join('');
-				    appendHTML += `<td>${imagesHTML}</td>`;
+					   let imageLists = record.images ? record.images.split(',') : [];
+    				let imagesHTML = imageLists.length > 0 ? imageLists.map(img => `<div>${img}</div>`).join('') : 'null';
+   					 appendHTML += `<td>${imagesHTML}</td>`;
 				
 					appendHTML += `<td>${record.updatedBy}</td>`;
 					appendHTML += `<td>${record.updatedDate}</td>`;
@@ -170,7 +170,7 @@ $(document).ready(function() {
         .then(res => {
             if (res.success) {
                 this.swicthViewPosts(true);
-                toastr.success(currentId ? 'Update posts success!' : 'Create posts success!');
+                toastr.success(currentId ? 'Update ads success!' : 'Create ads success!');
             } else {
                 toastr.error(res.errMsg);
             }

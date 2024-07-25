@@ -153,7 +153,7 @@ $(document).ready(function() {
 				.then(res => {
 					if (res.success) {
 						this.swicthViewPosts(true);
-						toastr.success(`Update posts success !`)
+						toastr.success(`Update web settings success !`)
 					} else {
 						toastr.error(res.errMsg);
 					}
@@ -167,7 +167,7 @@ $(document).ready(function() {
 				.then(res => {
 					if (res.success) {
 						this.swicthViewPosts(true);
-						toastr.success(`Create posts success !`)
+						toastr.success(`Create web settings success !`)
 					} else {
 						toastr.error(res.errMsg);
 					}
