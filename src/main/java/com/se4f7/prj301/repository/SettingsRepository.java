@@ -9,6 +9,7 @@ import java.util.List;
 import com.se4f7.prj301.constants.ErrorMessage;
 import com.se4f7.prj301.enums.StatusEnum;
 import com.se4f7.prj301.model.PaginationModel;
+import com.se4f7.prj301.model.request.AdsModelRequest;
 import com.se4f7.prj301.model.request.SettingsModelRequest;
 import com.se4f7.prj301.model.response.SettingsModelResponse;
 
@@ -22,8 +23,13 @@ public class SettingsRepository {
 	private static final String DELETE_BY_ID_SQL = "DELETE FROM web_setting  WHERE id= ? ";
 	private static final String SEARCH_LIST_SQL = "SELECT * FROM web_setting WHERE type LIKE ? LIMIT ? OFFSET ?";
 	private static final String COUNT_BY_NAME_SQL = "SELECT COUNT(id) AS totalRecord FROM web_setting WHERE type LIKE ?";
-
+	private void validateRequest(SettingsModelRequest request) {
+        if (request.getType() == null || request.getType().trim().isEmpty()) {
+            throw new IllegalArgumentException("The Type field cannot be left blank");	        	        
+        }
+    }
 	public boolean create(SettingsModelRequest request, String username) {
+		validateRequest(request);
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)) {
@@ -44,6 +50,7 @@ public class SettingsRepository {
 	}
 
 	public boolean update(Long id, SettingsModelRequest request, String username) {
+		validateRequest(request);
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {

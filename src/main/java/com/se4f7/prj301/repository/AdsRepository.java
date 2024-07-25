@@ -22,9 +22,16 @@ public class AdsRepository {
 	private static final String DELETE_BY_ID_SQL = "DELETE FROM ads  WHERE id= ? ";
 	private static final String SEARCH_LIST_SQL = "SELECT * FROM ads WHERE position LIKE ? LIMIT ? OFFSET ?";
 	private static final String COUNT_BY_NAME_SQL = "SELECT COUNT(id) AS totalRecord FROM ads WHERE position LIKE ?";
+	 
+	private void validateRequest(AdsModelRequest request) {
+	        if (request.getPosition() == null || request.getPosition().trim().isEmpty()) {
+	            throw new IllegalArgumentException("The Position field cannot be left blank");	        	        
+	        }
+	    }
 
 	public boolean create(AdsModelRequest request, String username) {
 		// Open connection and set SQL query into PreparedStatement.
+		validateRequest(request);
 		try (Connection connection = DBUtil.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)) {
 			// Set parameters.
@@ -46,6 +53,7 @@ public class AdsRepository {
 	}
 
 	public boolean update(Long id, AdsModelRequest request, String username) {
+		validateRequest(request);
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {

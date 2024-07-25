@@ -10,6 +10,7 @@ import com.se4f7.prj301.constants.ErrorMessage;
 import com.se4f7.prj301.enums.StatusEnum;
 import com.se4f7.prj301.model.PaginationModel;
 import com.se4f7.prj301.model.request.MessagesModelRequest;
+import com.se4f7.prj301.model.request.SettingsModelRequest;
 import com.se4f7.prj301.model.response.MessagesModelResponse;
 import com.se4f7.prj301.utils.DBUtil;
 
@@ -21,8 +22,13 @@ public class MessagesRepository {
 	private static final String DELETE_BY_ID_SQL = "DELETE FROM messages WHERE id = ?";
 	private static final String SEARCH_LIST_SQL = "SELECT * FROM messages WHERE email LIKE ? LIMIT ? OFFSET ?";
 	private static final String COUNT_BY_NAME_SQL = "SELECT COUNT(id) AS totalRecord FROM messages WHERE email LIKE ?";
-
+	private void validateRequest(MessagesModelRequest request) {
+        if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
+            throw new IllegalArgumentException("The Email field cannot be left blank");	        	        
+        }
+    }
 	public boolean create(MessagesModelRequest request, String username) {
+		validateRequest(request);
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)) {
@@ -42,6 +48,7 @@ public class MessagesRepository {
 	}
 
 	public boolean update(Long id, MessagesModelRequest request, String username) {
+		validateRequest(request);
 		// Open connection and set SQL query into PreparedStatement.
 		try (Connection connection = DBUtil.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
